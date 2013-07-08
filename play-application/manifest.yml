@@ -3,5 +3,12 @@ applications:
 - name: play-application
   memory: 1G
   instances: 1
+  url: glyn-play-application.cfapps.io
   path: dist/play-application-1.0-SNAPSHOT.zip
-  buildpack: https://github.com/cloudfoundry/java-buildpack
+  services:
+    elephantsql-9837f:
+      label: elephantsql
+      provider: elephantsql
+      version: n/a
+      plan: turtle
+  buildpack: https://github.com/cloudfoundry/cloudfoundry-buildpack-java
