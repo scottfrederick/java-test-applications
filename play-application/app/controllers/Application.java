@@ -29,7 +29,11 @@ public class Application extends Controller {
             "Database configuration:\n" + DRIVER_KEY + "=" + driverValue + "\n" +
             URL_KEY + "=" + urlValue + "\n" +
             USER_KEY + "=" + userValue + "\n" +
-            PASSWORD_KEY + "=" + passwordValue));
+            PASSWORD_KEY + "=" + passwordValue + "\n" +
+            "System properties:\n" + DRIVER_KEY + "=" + System.getProperty(DRIVER_KEY) + "\n" +
+            URL_KEY + "=" + System.getProperty(URL_KEY) + "\n" +
+            USER_KEY + "=" + System.getProperty(USER_KEY) + "\n" +
+            PASSWORD_KEY + "=" + System.getProperty(PASSWORD_KEY)));
     }
   
 }
