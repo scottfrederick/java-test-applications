@@ -13,5 +13,4 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion"
     compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
     compile project(':core')
-    runtime "mysql:mysql-connector-java:$mySqlVersion"
 }

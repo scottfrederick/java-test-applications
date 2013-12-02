@@ -27,7 +27,6 @@ import org.springframework.context.annotation.ComponentScan
 @EnableAutoConfiguration
 @Grab('com.gopivotal.cloudfoundry.test:core:1.0.0.BUILD-SNAPSHOT')
 @Grab('h2')
-@Grab('mysql-connector-java')
 @Grab('spring-boot-starter-jdbc')
 class ApplicationConfiguration {
 
