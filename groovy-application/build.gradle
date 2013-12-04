@@ -43,7 +43,7 @@ task copyLibs(type: Copy) {
     into 'lib'
 }
 
-task build(overwrite: true, dependsOn: [compileGroovy, copyLibs])
+task build(overwrite: true, dependsOn: [copyLibs])
 
 task clean(overwrite:true, type: Delete) {
     delete 'build', 'classes', 'lib'

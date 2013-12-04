@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+ import org.codehaus.groovy.tools.RootLoader
+
 class Application {
 
     @SuppressWarnings("GroovyAssignabilityCheck")
@@ -22,17 +24,19 @@ class Application {
             !it.path.endsWith('servlet-api-2.4.jar') && !it.path.endsWith('./')
         }
         urls.addAll new File('lib').listFiles().collect { it.toURI().toURL() }
-        urls << new File('classes').toURI().toURL()
 
-        def classLoader = new URLClassLoader(urls as URL[], (ClassLoader) null)
-        Thread.currentThread().setContextClassLoader(classLoader)
+        GroovyClassLoader groovyClassLoader = new GroovyClassLoader(null)
+        urls.each { groovyClassLoader.addURL(it) }
+        Thread.currentThread().setContextClassLoader(groovyClassLoader)
 
         def initializationUtils = Class.forName("com.gopivotal.cloudfoundry.test.core.InitializationUtils", true,
-                classLoader)
+                groovyClassLoader)
         initializationUtils.getMethod("fail").invoke(initializationUtils.newInstance())
 
-        def springApplication = Class.forName("org.springframework.boot.SpringApplication", true, classLoader)
-        def applicationConfiguration = Class.forName("ApplicationConfiguration", true, classLoader)
+        def springApplication = Class.forName("org.springframework.boot.SpringApplication", true, groovyClassLoader)
+
+        def applicationConfiguration = groovyClassLoader.parseClass(new File("ApplicationConfiguration.groovy"))
+        groovyClassLoader.parseClass(new File("ApplicationController.groovy"))
 
         args += '--server.port=' + System.env['PORT']
 
