@@ -43,4 +43,13 @@ class ApplicationController {
     def systemProperties() {
         render this.runtimeUtils.systemProperties() as JSON
     }
+
+    def springProfiles() {
+        render this.runtimeUtils.springProfiles() as JSON
+    }
+
+    def cloudProperties() {
+        render this.runtimeUtils.cloudProperties() as JSON
+    }
+
 }

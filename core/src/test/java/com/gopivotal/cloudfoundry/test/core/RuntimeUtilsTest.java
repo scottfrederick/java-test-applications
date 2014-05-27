@@ -17,6 +17,8 @@
 package com.gopivotal.cloudfoundry.test.core;
 
 import org.junit.Test;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.StandardEnvironment;
 
 import java.lang.management.RuntimeMXBean;
 import java.util.ArrayList;
@@ -27,7 +29,9 @@ import java.util.Map;
 
 import static org.mockito.Mockito.mock;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 public final class RuntimeUtilsTest {
@@ -38,7 +42,10 @@ public final class RuntimeUtilsTest {
 
     private final Map<Object, Object> systemProperties = new HashMap<>();
 
-    private final RuntimeUtils runtimeUtils = new RuntimeUtils(this.environment, this.runtimeMXBean, this.systemProperties);
+    private final Environment springEnvironment = new StandardEnvironment();
+
+    private final RuntimeUtils runtimeUtils = new RuntimeUtils(this.environment, this.runtimeMXBean,
+            this.systemProperties, this.springEnvironment);
 
     @Test
     public void classPath() {
@@ -63,5 +70,17 @@ public final class RuntimeUtilsTest {
     @Test
     public void systemProperties() {
         assertSame(this.systemProperties, this.runtimeUtils.systemProperties());
+    }
+
+    @Test
+    public void springProfiles() {
+        assertTrue(this.runtimeUtils.springProfiles().isEmpty());
+    }
+
+    @Test
+    public void cloudProperties() {
+        assertEquals(2, this.runtimeUtils.cloudProperties().size());
+        assertNull(this.runtimeUtils.cloudProperties().get("cloud.application.app-id"));
+        assertNull(this.runtimeUtils.cloudProperties().get("cloud.application.instance-id"));
     }
 }

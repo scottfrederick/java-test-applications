@@ -6,6 +6,8 @@ class UrlMappings {
         '/environment-variables'    (controller: 'Application', action: 'environmentVariables')
         '/input-arguments'          (controller: 'Application', action: 'inputArguments')
         '/system-properties'        (controller: 'Application', action: 'systemProperties')
+        '/spring-profiles'          (controller: 'Application', action: 'springProfiles')
+        '/cloud-properties'         (controller: 'Application', action: 'cloudProperties')
         '/datasource/check-access'  (controller: 'DataSource',  action: 'checkAccess')
         '/datasource/url'           (controller: 'DataSource',  action: 'url')
         '/redis/check-access'       (controller: 'Redis',       action: 'checkAccess')

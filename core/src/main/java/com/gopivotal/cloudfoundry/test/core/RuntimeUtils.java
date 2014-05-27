@@ -16,11 +16,14 @@
 
 package com.gopivotal.cloudfoundry.test.core;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,14 +39,23 @@ public final class RuntimeUtils {
 
     private final Map<Object, Object> systemProperties;
 
-    public RuntimeUtils() {
-        this(System.getenv(), ManagementFactory.getRuntimeMXBean(), System.getProperties());
+    private final Environment springEnvironment;
+
+    private static final String[] REQUIRED_PROPERTIES = {
+            "cloud.application.app-id",
+            "cloud.application.instance-id"
+    };
+
+    @Autowired
+    public RuntimeUtils(Environment springEnvironment) {
+        this(System.getenv(), ManagementFactory.getRuntimeMXBean(), System.getProperties(), springEnvironment);
     }
 
-    RuntimeUtils(Map<String, String> environment, RuntimeMXBean runtimeMXBean, Map<Object, Object> systemProperties) {
+    RuntimeUtils(Map<String, String> environment, RuntimeMXBean runtimeMXBean, Map<Object, Object> systemProperties, Environment springEnvironment) {
         this.environment = environment;
         this.runtimeMXBean = runtimeMXBean;
         this.systemProperties = systemProperties;
+        this.springEnvironment = springEnvironment;
     }
 
     public List<String> classPath() {
@@ -62,4 +74,15 @@ public final class RuntimeUtils {
         return this.systemProperties;
     }
 
+    public List<String> springProfiles() {
+        return Arrays.asList(this.springEnvironment.getActiveProfiles());
+    }
+
+    public Map<String, String> cloudProperties() {
+        Map<String, String> properties = new HashMap<>();
+        for (String propertyName : REQUIRED_PROPERTIES) {
+            properties.put(propertyName, this.springEnvironment.getProperty(propertyName));
+        }
+        return properties;
+    }
 }

@@ -65,4 +65,14 @@ public final class ApplicationController {
     Map<Object, Object> systemProperties() {
         return this.runtimeUtils.systemProperties();
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/spring-profiles")
+    List<String> springProfiles() {
+        return this.runtimeUtils.springProfiles();
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/cloud-properties")
+    Map<String, String> cloudProperties() {
+        return this.runtimeUtils.cloudProperties();
+    }
 }
